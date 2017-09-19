@@ -37,10 +37,13 @@ function sendDataToServer(jsonData){
     data: JSON.stringify(jsonData),
     type: 'POST',
     success: function(response) {
+        document.getElementById("inputUrl").value = "http://127.0.0.1:5000/"+response;
+        document.getElementById("inputUrl").select();
         console.log(response);
     },
     error: function(error) {
-        console.log(error);
+      document.getElementById("inputUrl").value = "an error occered. please try again.";
+      console.log(error);
     }
 });
 }
@@ -77,10 +80,20 @@ function parseCookieForMe(){
   }
 }
 
+function createShareUrl(){
+  console.log(setJsons);
+  sendDataToServer(setJsons);
+}
+
+function copyShareUrl(){
+  document.getElementById("inputUrl").select();
+  document.execCommand("copy");
+}
 
 
 chrome.tabs.getSelected(null, function(e) {
   domain = getDomain(e.url);
+  console.log(domain);
   chrome.cookies.getAll({}, function(o) {
 
     for (var t in o) {
@@ -102,20 +115,9 @@ chrome.tabs.getSelected(null, function(e) {
 
     //json string
     content += JSON.stringify(jsons, null, 2);
-
-    var downloadLinkContent = "data:application/octet-stream;base64," + btoa(content);
-    var downloadLink = "<a href=" + downloadLinkContent + ' download="cookies.json">download as json file</a>';
-    var setCookieLink = "<a  id='setCookie'  href='#' >set cookie</a>";
-    var parseCookie = "<a  id='parseCookie'  href='#' >parse cookie</a>";
-    //console.log("I am there");    
-    //setCookieForMe();
-    document.getElementById("readJson").value = content;
-    var divText = document.getElementById("buttons");
-    divText.innerHTML = '<pre>\n'+ downloadLink +'\n\n'+'\n\n'+setCookieLink+'\t' + parseCookie +'</pre>';
-    //document.write('<pre>\n'+ downloadLink +'\n\n'+'\n\n'+setCookieLink+'</pre>');
-    document.getElementById("setCookie").addEventListener("click", setCookieForMe);
-    document.getElementById("parseCookie").addEventListener("click", parseCookieForMe);
-    var errorText = document.getElementById("errorText");
-    errorText.style.display="none";
+    setJsons = content;
+    console.log(setJsons);
+    document.getElementById("createButton").addEventListener("click", createShareUrl);
+    document.getElementById("copyButton").addEventListener("click", copyShareUrl);    
   });
 });
