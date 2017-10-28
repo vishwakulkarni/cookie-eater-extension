@@ -22,7 +22,7 @@ function myOutsideFunc(domainUrl){
         chrome.tabs.update(current.id, {'url': domainUrl});
      });
 }
-
+//comment https://shareurl-2222.appspot.com/url/
 function getDataFromCode(refCode){
     $.ajax({
         url: 'https://shareurl-2222.appspot.com/url/' + refCode,
