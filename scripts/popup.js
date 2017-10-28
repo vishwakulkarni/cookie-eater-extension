@@ -33,11 +33,11 @@ var content = "",
 
 function sendDataToServer(jsonData){
   $.ajax({
-    url: 'http://127.0.0.1:5000/createUrl',
+    url: 'https://shareurl-2222.appspot.com/createUrl',
     data: JSON.stringify(jsonData),
     type: 'POST',
     success: function(response) {
-        document.getElementById("inputUrl").value = "http://127.0.0.1:5000/"+response;
+        document.getElementById("inputUrl").value = "https://shareurl-2222.appspot.com/"+response;
         document.getElementById("inputUrl").select();
         console.log(response);
     },
